@@ -40,7 +40,7 @@ public class JsonConvertTest {
                 for (int i = 0; i < portfolioJsonList.length(); i++) {
                     JSONObject  portfolioJson = portfolioJsonList.getJSONObject(i);
                     Portfolio p = new Portfolio(portfolioJson.optString(Constant.PORTFOLIO_ID_TAG));
-                    assertNotNull(p);
+                    assertNotNull(p); //Portfolio is not null
                 }
             }
         } catch (JSONException e) {
@@ -51,19 +51,14 @@ public class JsonConvertTest {
     @Test
     public void convert_Json_to_Navs_isCorrect(){
         ArrayList<Portfolio>  portfolios = new ArrayList<>();
-        String data = "\"navs\":[\n" +
-                "{\n" +
+        String data = "{\n" +
                 "\"date\":\"2017-01-01\",\n" +
                 "\"amount\":9837.51504\n" +
-                "},\n" +
-                "{\n" +
-                "\"date\":\"2017-01-02\",\n" +
-                "\"amount\":9894.264455\n" +
-                "}]";
+                "}";
 
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         NavsItem navsItems = gson.fromJson(data, NavsItem.class);
-        assertNotNull(navsItems);
+        assertNotNull(navsItems); //NavsItem is not null
 
     }
 }
