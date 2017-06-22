@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
     protected void onResume() {
         super.onResume();
 
-        setDataToFireBase();
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
+        //setDataToFireBase();
 //        readDataFireBase();
         Application.setActiveActivity(this);
         setDailyChart();
@@ -193,8 +194,7 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
 
     private DatabaseReference mDatabase;
     private void  setDataToFireBase(){
-        //FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         Portfolio p = portfolios.get(0);
         mDatabase.child(Constant.PORTFOLIO_ID_TAG).setValue(p.getId());
         DatabaseReference navsDBRef =  mDatabase.child(Constant.NAVS_TAG).push();

@@ -13,18 +13,22 @@ The progress below
 5. While converting NavsItem class, get MonthData and QuarterData:
     - compare 2 object Navs to check they are the same Month 
       the greater Date will be insert into MonthlyNavsList with index = Month_Of_Year
-      example: compare 2017/01/01 and 2017/01/02, they are the same month, insert 2017/01/02 into MonthlyNavsList with index =0
+        -   example: compare 2017/01/01 and 2017/01/02, they are the same month, insert 2017/01/02 into MonthlyNavsList with index =0
                continue to the end of month, the next month (Feb) will be inserted into MonthlyNavsList with index =1
       
     - compare 2 object Navs to check they are the same Month and is a quarter month (Mar, Jun, Sep,Dec)
       the greater Date will be insert into QuarterlyNavsList with index = Month_Of_Year
-      example: compare 2017/03/01 and 2017/03/02, they are the same month and a quarter month
+        -   example: compare 2017/03/01 and 2017/03/02, they are the same month and a quarter month
               , insert 2017/01/02 into MonthlyNavsList with index =0
               continue to the end of month, the next quarter month (Jun) will be inserted into QuarterlyNavsList with index =1
               
  6. After finish Converting for Json string, we will have a Portfio with ID and 3 ArrayList
  
- 7. Using lib MPAndroidChart to display data
+ 7. Using lib MPAndroidChart to display data into Line Chart base on each ArrayList for 3 option: Daily/Monthly/Quarter
  
- 8.
+ 8.I also make some unit test, but no much
+
+ 9.I can not make Firebase saving data on time
+
+
  
