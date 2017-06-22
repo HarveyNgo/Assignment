@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     }
+                    //
                     portfolios.add(p);
                 }
             }
