@@ -4,46 +4,79 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:paddingRight="@dimen/activity_horizontal_margin"    >
 
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout
-        android:id="@+id/activity_main_content"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        app:umanoFadeColor="@color/Translucent"
-        app:umanoInitialState="collapsed"
-        app:umanoOverlay="true"
-        app:umanoPanelHeight="@dimen/main_table_option_height">
+        android:layout_height="match_parent">
         <LinearLayout
+            android:id="@+id/activity_ll_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp">
+            <LinearLayout
+                android:id="@+id/activity_main_ll_daily"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/common_toggle_left_bg"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    style="@style/CommonTogglePrimaryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="daily" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/activity_main_ll_monthly"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/common_toggle_middle_bg"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    style="@style/CommonTogglePrimaryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="Monthly" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/activity_main_ll_quarter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/common_toggle_right_bg"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    style="@style/CommonTogglePrimaryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="Quarter" />
+            </LinearLayout>
+        </LinearLayout>
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/activity_main_chart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/activity_main_chart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </com.github.mikephil.charting.charts.LineChart>
-        </LinearLayout>
+            android:layout_above="@+id/activity_ll_option">
+        </com.github.mikephil.charting.charts.LineChart>
 
 
-        <!-- Table option panel -->
-        <FrameLayout
-            android:id="@+id/activity_main_fl_options"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/main_table_option_height"
-            android:background="@color/DarkTranslucent"
-            android:visibility="gone">
-
-        </FrameLayout>
-    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
-
-    <TextView
-        android:id="@+id/activity_main_tv_option"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="option"/>
+    </RelativeLayout>
 </RelativeLayout>
