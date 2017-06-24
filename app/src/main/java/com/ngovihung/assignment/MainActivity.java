@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -44,11 +46,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements   View.OnClickListener, OnChartValueSelectedListener, OnChartGestureListener {
+public class MainActivity extends AppCompatActivity implements   View.OnClickListener, OnChartValueSelectedListener, OnChartGestureListener, SeekBar.OnSeekBarChangeListener {
 
     LineChart lineChart;
     ArrayList<Portfolio>  portfolios;
-    View activity_main_ll_quarter,activity_main_ll_monthly,activity_main_ll_daily;
+    private SeekBar mSeekBarX, mSeekBarY;
+    private TextView tvX, tvY;
+    //View activity_main_ll_quarter,activity_main_ll_monthly,activity_main_ll_daily;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
         lineChart.setScaleEnabled(true);
         // if disabled, scaling can be done on x- and y-axis separately
         lineChart.setPinchZoom(true);
-
+        lineChart.getDescription().setEnabled(false);
 
         // x-axis limit line
 //        LimitLine llXAxis = new LimitLine(10f, "Index 10");
@@ -109,12 +113,27 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
         l.setForm(Legend.LegendForm.LINE);
 
 
-        activity_main_ll_quarter  = (View) findViewById(R.id.activity_main_ll_quarter);
-        activity_main_ll_quarter.setOnClickListener(this);
-        activity_main_ll_monthly  = (View) findViewById(R.id.activity_main_ll_monthly);
-        activity_main_ll_monthly.setOnClickListener(this);
-        activity_main_ll_daily =  (View) findViewById(R.id.activity_main_ll_daily);
-        activity_main_ll_daily.setOnClickListener(this);
+//        activity_main_ll_quarter  = (View) findViewById(R.id.activity_main_ll_quarter);
+//        activity_main_ll_quarter.setOnClickListener(this);
+//        activity_main_ll_monthly  = (View) findViewById(R.id.activity_main_ll_monthly);
+//        activity_main_ll_monthly.setOnClickListener(this);
+//        activity_main_ll_daily =  (View) findViewById(R.id.activity_main_ll_daily);
+//        activity_main_ll_daily.setOnClickListener(this);
+
+        tvX = (TextView) findViewById(R.id.tvXMax);
+        tvY = (TextView) findViewById(R.id.tvYMax);
+
+        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
+        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+
+        mSeekBarX.setProgress(1);
+        mSeekBarX.setMax(364);
+        mSeekBarY.setMax(364);
+        mSeekBarY.setProgress(364);
+
+        mSeekBarY.setOnSeekBarChangeListener(this);
+        mSeekBarX.setOnSeekBarChangeListener(this);
+
         portfolios = new ArrayList<>();
         getData();
 
@@ -143,19 +162,17 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
             portfolioJsonList = new JSONArray(data);
             if (portfolioJsonList.length() > 0 ) {
                 for (int i = 0; i < portfolioJsonList.length(); i++) {
-                    if( i > 0)
-                        return;
                     JSONObject  portfolioJson = portfolioJsonList.getJSONObject(i);
                     Portfolio p = new Portfolio(portfolioJson.optString(Constant.PORTFOLIO_ID_TAG));
-                    p.getNavsItems().clear();
                     JSONArray navsJsonList = portfolioJson.getJSONArray(Constant.NAVS_TAG);
                     if (navsJsonList != null && navsJsonList.length() > 0) {
                         for (int j = 0; j < navsJsonList.length(); ++j) {
-                            p.getNavsItems().add(gson.fromJson(navsJsonList.getJSONObject(j).toString(), NavsItem.class));
-                            if(j > 0 ){
-                                p.setMonthlyNavs(p.getNavsItems().get(j-1),p.getNavsItems().get(j));
-                                p.setQuarterNavs(p.getNavsItems().get(j-1),p.getNavsItems().get(j));
-                            }
+                            NavsItem  item  = gson.fromJson(navsJsonList.getJSONObject(j).toString(), NavsItem.class);
+                            p.getDailyNavs().set(Utils.getDayInYear(item.getDate())-1,item);
+//                            if(j > 0 ){
+//                                p.setMonthlyNavs(p.getDailyNavs().get(j-1),p.getDailyNavs().get(j));
+//                                p.setQuarterNavs(p.getDailyNavs().get(j-1),p.getDailyNavs().get(j));
+//                            }
                         }
                     }
                     portfolios.add(p);
@@ -173,26 +190,22 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         for(int i=0;i< portfolios.size(); i++){
             ArrayList<Entry> entries = new ArrayList<>();
-            for(int j=0;j< portfolios.get(i).getNavsItems().size(); j++){
-                entries.add(new Entry(Utils.getDayInYear(portfolios.get(i).getNavsItems().get(j).getDate()),
-                        portfolios.get(i).getNavsItems().get(j).getAmount(),getResources().getDrawable(R.drawable.star)));
+            for(int j=0;j< portfolios.get(i).getDailyNavs().size(); j++){
+//                int position = portfolios.get(i).getDailyNavs().get(j).getDate() == null ? j: Utils.getDayInYear(portfolios.get(i).getDailyNavs().get(j).getDate());
+//                entries.add(new Entry(position,
+//                        portfolios.get(i).getDailyNavs().get(j).getAmount(),getResources().getDrawable(R.drawable.star)));
+                if(portfolios.get(i).getDailyNavs().get(j).getDate() != null &&
+                        portfolios.get(i).getDailyNavs().get(j).getAmount() > 0){
+                    entries.add(new Entry(Utils.getDayInYear(portfolios.get(i).getDailyNavs().get(j).getDate()),
+                        portfolios.get(i).getDailyNavs().get(j).getAmount(),getResources().getDrawable(R.drawable.star)));
+                }else{
+                    continue;
+                }
             }
-            LineDataSet dataset = new LineDataSet(entries,portfolios.get(i).getId());
-            dataset.setColor(Constant.COLORS[i]);
-            dataset.enableDashedLine(10f, 5f, 0f);
-            dataset.enableDashedHighlightLine(10f, 5f, 0f);
-            dataset.setCircleColor(Color.BLACK);
-            dataset.setLineWidth(1f);
-            dataset.setCircleRadius(3f);
-            dataset.setDrawCircleHole(false);
-            dataset.setValueTextSize(9f);
-            dataset.setDrawFilled(true);
-            dataset.setFormLineWidth(1f);
-            dataset.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
-            dataset.setFormSize(15.f);
+            LineDataSet dataset = setLineDataSetStyle(entries,"aa",i);
             if (com.github.mikephil.charting.utils.Utils.getSDKInt() >= 18) {
                 // fill drawable only supported on api level 18 and above
-                Drawable drawable = ContextCompat.getDrawable(this, R.drawable.fade_red);
+                Drawable drawable = ContextCompat.getDrawable(this,Constant.FADE_COLORS[i]);
                 dataset.setFillDrawable(drawable);
             }
             else {
@@ -260,31 +273,84 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
 //        lineChart.notifyDataSetChanged();
 //        lineChart.invalidate();
     }
+    private void setData(int fromIndex, int range, int type){
+        if(lineChart.getData() != null)
+            lineChart.getData().clearValues();
+
+        if(type == 1) { //Daily
+            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            for (int i = 0; i < portfolios.size(); i++) {
+                ArrayList<Entry> entries = new ArrayList<>();
+                List<NavsItem> navsItems = portfolios.get(i).getDailyNavs().subList(fromIndex,fromIndex+range+1);
+                for (int j = 0; j < navsItems.size(); j++) {
+//                    int position = navsItems.get(j).getDate() == null ? j: Utils.getDayInYear(navsItems.get(j).getDate());
+//                    entries.add(new Entry(position,navsItems.get(j).getAmount(),
+//                            getResources().getDrawable(R.drawable.star)));
+                    if(navsItems.get(j).getDate() != null &&
+                            navsItems.get(j).getAmount() > 0){
+                        entries.add(new Entry(Utils.getDayInYear(navsItems.get(j).getDate()),
+                                navsItems.get(j).getAmount(),getResources().getDrawable(R.drawable.star)));
+                    }else{
+                        continue;
+                    }
+                }
+                LineDataSet dataset = setLineDataSetStyle(entries,"aa",i);
+                if (com.github.mikephil.charting.utils.Utils.getSDKInt() >= 18) {// fill drawable only supported on api level 18 and above
+                    Drawable drawable = ContextCompat.getDrawable(this,Constant.FADE_COLORS[i]);
+                    dataset.setFillDrawable(drawable);
+                }
+                else {
+                    dataset.setFillColor(Color.BLACK);
+                }
+                dataSets.add(dataset);
+            }
+            // create a data object with the datasets
+            LineData data = new LineData(dataSets);
+            lineChart.setData(data);
+        }
+    }
+
+    private LineDataSet setLineDataSetStyle(ArrayList<Entry> entries,String title, int position){
+        LineDataSet dataset = new LineDataSet(entries,"");
+        dataset.setColor(Constant.COLORS[position]);
+        dataset.enableDashedLine(10f, 5f, 0f);
+        dataset.enableDashedHighlightLine(10f, 5f, 0f);
+        dataset.setCircleColor(Color.BLACK);
+        dataset.setLineWidth(1f);
+        dataset.setCircleRadius(3f);
+        dataset.setDrawCircleHole(false);
+        dataset.setValueTextSize(9f);
+        dataset.setDrawFilled(true);
+        dataset.setFormLineWidth(1f);
+        dataset.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+        dataset.setFormSize(15.f);
+        return dataset;
+    }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.activity_main_ll_daily:
-                setSelectedForView(true,false,false);
-                setDailyChart();
-                break;
-
-            case R.id.activity_main_ll_monthly :
-                setSelectedForView(false,true,false);
-                setMonthlyChart();
-                break;
-            case R.id.activity_main_ll_quarter :
-                setSelectedForView(false,false,true);
-                setQuarterChart();
-                break;
-        }
+//        switch (v.getId()){
+//            case R.id.activity_main_ll_daily:
+//                setSelectedForView(true,false,false);
+//                setDailyChart();
+//                break;
+//
+//            case R.id.activity_main_ll_monthly :
+//                setSelectedForView(false,true,false);
+//                setMonthlyChart();
+//                break;
+//            case R.id.activity_main_ll_quarter :
+//                setSelectedForView(false,false,true);
+//                setQuarterChart();
+//                break;
+//        }
     }
 
     private void setSelectedForView(boolean daily, boolean monthly, boolean quarter){
-        activity_main_ll_daily.setSelected(daily);
-        activity_main_ll_monthly.setSelected(monthly);
-        activity_main_ll_quarter.setSelected(quarter);
+//        activity_main_ll_daily.setSelected(daily);
+//        activity_main_ll_monthly.setSelected(monthly);
+//        activity_main_ll_quarter.setSelected(quarter);
     }
 
 
@@ -451,7 +517,7 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
         Portfolio p = portfolios.get(0);
         mDatabase.child(Constant.PORTFOLIO_ID_TAG).setValue(p.getId());
         DatabaseReference navsDBRef =  mDatabase.child(Constant.NAVS_TAG).push();
-        for(NavsItem n : p.getNavsItems()){
+        for(NavsItem n : p.getDailyNavs()){
             navsDBRef.setValue(n);
         }
     }
@@ -521,6 +587,33 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
 
     @Override
     public void onChartTranslate(MotionEvent me, float dX, float dY) {
+
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        switch (seekBar.getId()){
+            case R.id.seekBar1:
+                mSeekBarY.setMax(365-mSeekBarX.getProgress());
+                mSeekBarY.setProgress(mSeekBarY.getMax());
+                break;
+        }
+        tvX.setText("" + (mSeekBarX.getProgress()+1)); //Utils.getDateString(mSeekBarX.getProgress()));
+        tvY.setText("" + (mSeekBarY.getProgress()));
+
+        setData(mSeekBarX.getProgress(), mSeekBarY.getProgress()-1,1);
+
+        // redraw
+        lineChart.invalidate();
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
 
     }
 }

@@ -7,76 +7,103 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"    >
 
-    <RelativeLayout
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/activity_main_chart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/chart_name" />
+
+    <SeekBar
+        android:id="@+id/seekBar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="8dp"
+        android:layout_toLeftOf="@+id/tvYMax"
+        android:layout_marginRight="5dp"
+        android:max="365"
+        android:paddingBottom="12dp" />
+
+    <SeekBar
+        android:id="@+id/seekBar1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/seekBar2"
+        android:layout_margin="8dp"
+        android:layout_marginBottom="35dp"
+        android:layout_toLeftOf="@+id/tvXMax"
+        android:layout_marginRight="5dp"
+        android:paddingBottom="12dp" />
+
+    <LinearLayout
+        android:id="@+id/chart_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_above="@+id/seekBar1">
         <LinearLayout
-            android:id="@+id/activity_ll_option"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="3"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp">
-            <LinearLayout
-                android:id="@+id/activity_main_ll_daily"
-                android:layout_width="0dp"
+            android:layout_weight="1">
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/common_toggle_left_bg"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <TextView
-                    style="@style/CommonTogglePrimaryText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:text="daily" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/activity_main_ll_monthly"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/common_toggle_middle_bg"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <TextView
-                    style="@style/CommonTogglePrimaryText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:text="Monthly" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/activity_main_ll_quarter"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/common_toggle_right_bg"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <TextView
-                    style="@style/CommonTogglePrimaryText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:text="Quarter" />
-            </LinearLayout>
+                android:text="Chart1"/>
         </LinearLayout>
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/activity_main_chart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/activity_ll_option">
-        </com.github.mikephil.charting.charts.LineChart>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chart2"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chart3"/>
+        </LinearLayout>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tvXMax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/seekBar1"
+        android:layout_alignParentRight="true"
+        android:text="1"
+        android:layout_marginBottom="15dp"
+        android:gravity="right"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
+    <TextView
+        android:id="@+id/tvYMax"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/seekBar2"
+        android:layout_alignParentRight="true"
+        android:text="365"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="10dp"
+        android:gravity="right"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    </RelativeLayout>
 </RelativeLayout>

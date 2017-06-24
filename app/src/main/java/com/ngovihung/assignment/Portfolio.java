@@ -11,7 +11,7 @@ public class Portfolio {
 
     private String id;
 
-    ArrayList<NavsItem> navsItems;
+    ArrayList<NavsItem> DailyNavs;
 
     private ArrayList<NavsItem> MonthlyNavs;
     private ArrayList<NavsItem> quarterlyNavs;
@@ -19,17 +19,17 @@ public class Portfolio {
 
     public Portfolio(String id){
         this.id = id;
-        navsItems = new ArrayList<>();
+        DailyNavs = new ArrayList<>(Collections.nCopies(365, new NavsItem()));
         MonthlyNavs = new ArrayList<>(Collections.nCopies(12, new NavsItem()));
         quarterlyNavs = new ArrayList<>(Collections.nCopies(4, new NavsItem()));
     }
 
-    public ArrayList<NavsItem> getNavsItems() {
-        return navsItems;
+    public ArrayList<NavsItem> getDailyNavs() {
+        return DailyNavs;
     }
 
     public void setNavsItems(ArrayList<NavsItem> navsItems) {
-        this.navsItems = navsItems;
+        this.DailyNavs = navsItems;
     }
 
     public String getId() {
