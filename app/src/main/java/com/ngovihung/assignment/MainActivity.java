@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,9 +48,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements   View.OnClickListener, OnChartValueSelectedListener, OnChartGestureListener, SeekBar.OnSeekBarChangeListener {
+public class MainActivity extends AppCompatActivity implements   View.OnClickListener, OnChartValueSelectedListener, OnChartGestureListener, SeekBar.OnSeekBarChangeListener, CompoundButton.OnCheckedChangeListener {
 
     LineChart lineChart;
+    CheckBox checkbox_chart_1,checkbox_chart_2,checkbox_chart_3;
     ArrayList<Portfolio>  portfolios;
     private SeekBar mSeekBarX, mSeekBarY;
     private TextView tvX, tvY;
@@ -108,10 +111,11 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
         lineChart.getAxisRight().setEnabled(false); //TODO
         lineChart.animateX(2500);
         Legend l = lineChart.getLegend();
-
         // modify the legend ...
         l.setForm(Legend.LegendForm.LINE);
 
+        //lineChart.getXAxis().setDrawLabels(false);
+        lineChart.getLegend().setEnabled(false);
 
 //        activity_main_ll_quarter  = (View) findViewById(R.id.activity_main_ll_quarter);
 //        activity_main_ll_quarter.setOnClickListener(this);
@@ -133,7 +137,12 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
 
         mSeekBarY.setOnSeekBarChangeListener(this);
         mSeekBarX.setOnSeekBarChangeListener(this);
-
+        checkbox_chart_1 = (CheckBox) findViewById(R.id.checkbox_chart_1);
+        checkbox_chart_1.setOnClickListener(this);
+        checkbox_chart_2 = (CheckBox) findViewById(R.id.checkbox_chart_2);
+        checkbox_chart_2.setOnClickListener(this);
+        checkbox_chart_3 = (CheckBox) findViewById(R.id.checkbox_chart_3);
+        checkbox_chart_3.setOnClickListener(this);
         portfolios = new ArrayList<>();
         getData();
 
@@ -273,19 +282,18 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
 //        lineChart.notifyDataSetChanged();
 //        lineChart.invalidate();
     }
-    private void setData(int fromIndex, int range, int type){
+    private void setData(int fromIndex, int range, int type, ArrayList<Integer> skipIndex){
         if(lineChart.getData() != null)
             lineChart.getData().clearValues();
 
         if(type == 1) { //Daily
             ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
             for (int i = 0; i < portfolios.size(); i++) {
+                if(skipIndex.contains(i))
+                    continue;
                 ArrayList<Entry> entries = new ArrayList<>();
                 List<NavsItem> navsItems = portfolios.get(i).getDailyNavs().subList(fromIndex,fromIndex+range+1);
                 for (int j = 0; j < navsItems.size(); j++) {
-//                    int position = navsItems.get(j).getDate() == null ? j: Utils.getDayInYear(navsItems.get(j).getDate());
-//                    entries.add(new Entry(position,navsItems.get(j).getAmount(),
-//                            getResources().getDrawable(R.drawable.star)));
                     if(navsItems.get(j).getDate() != null &&
                             navsItems.get(j).getAmount() > 0){
                         entries.add(new Entry(Utils.getDayInYear(navsItems.get(j).getDate()),
@@ -330,21 +338,15 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
 
     @Override
     public void onClick(View v) {
-//        switch (v.getId()){
-//            case R.id.activity_main_ll_daily:
-//                setSelectedForView(true,false,false);
-//                setDailyChart();
-//                break;
-//
-//            case R.id.activity_main_ll_monthly :
-//                setSelectedForView(false,true,false);
-//                setMonthlyChart();
-//                break;
-//            case R.id.activity_main_ll_quarter :
-//                setSelectedForView(false,false,true);
-//                setQuarterChart();
-//                break;
-//        }
+        switch (v.getId()){
+            case R.id.checkbox_chart_1:
+            case R.id.checkbox_chart_2:
+            case R.id.checkbox_chart_3:
+                setData(mSeekBarX.getProgress(), mSeekBarY.getProgress()-1,1,getSkipIndex());// redraw
+                lineChart.invalidate();
+                break;
+        }
+
     }
 
     private void setSelectedForView(boolean daily, boolean monthly, boolean quarter){
@@ -601,10 +603,20 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
         tvX.setText("" + (mSeekBarX.getProgress()+1)); //Utils.getDateString(mSeekBarX.getProgress()));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        setData(mSeekBarX.getProgress(), mSeekBarY.getProgress()-1,1);
+        setData(mSeekBarX.getProgress(), mSeekBarY.getProgress()-1,1,getSkipIndex());
 
         // redraw
         lineChart.invalidate();
+    }
+    private ArrayList<Integer> getSkipIndex(){
+        ArrayList<Integer> skipIndexes = new ArrayList<>();
+        if(!checkbox_chart_1.isChecked() )
+            skipIndexes.add(0);
+        if(!checkbox_chart_2.isChecked() )
+            skipIndexes.add(1);
+        if(!checkbox_chart_3.isChecked() )
+            skipIndexes.add(2);
+        return skipIndexes;
     }
 
     @Override
@@ -615,5 +627,9 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
     }
 }
