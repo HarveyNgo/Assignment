@@ -1,5 +1,6 @@
 package com.ngovihung.assignment;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -7,7 +8,7 @@ import java.util.Collections;
  * Created by ngo.vi.hung on 6/21/2017.
  */
 
-public class Portfolio {
+public class Portfolio implements Serializable {
 
     private String id;
 

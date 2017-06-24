@@ -2,13 +2,14 @@ package com.ngovihung.assignment;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by ngo.vi.hung on 6/21/2017.
  */
 
-public class NavsItem {
+public class NavsItem implements Serializable {
 
     @SerializedName("date")
     private Date date;
