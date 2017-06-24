@@ -30,7 +30,7 @@ dependencies {
 
     compile 'com.google.code.gson:gson:2.4'
 
-    compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
 
     // Required -- JUnit 4 framework
     testCompile 'junit:junit:4.12'
