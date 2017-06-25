@@ -45,7 +45,12 @@
             android:background="@drawable/list_background"
             android:orientation="horizontal"
             android:padding="12dp">
-
+            <TextView
+                style="@style/CommonText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Assignment" />
 
         </LinearLayout>
 

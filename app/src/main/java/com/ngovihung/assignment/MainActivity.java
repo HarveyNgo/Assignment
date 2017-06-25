@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, 0, 0);
         drawer.addDrawerListener(toggle);
-        toggle.setHomeAsUpIndicator(getResources().getDrawable(R.drawable.ic_menu));
+        toggle.setHomeAsUpIndicator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_menu));
         toggle.setDrawerIndicatorEnabled(true);
         toggle.setToolbarNavigationClickListener(this);
         toggle.syncState();

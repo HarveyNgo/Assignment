@@ -66,7 +66,7 @@ public class BaseFragment extends Fragment implements OnChartGestureListener, Se
     protected void setData(int fromIndex, int range, ArrayList<Integer> skipIndex) {
         if (lineChart.getData() != null)
             lineChart.getData().clearValues();
-
+        int maxItems=0;
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         for (int i = 0; i < portfolios.size(); i++) {
             if (skipIndex.contains(i))
@@ -99,6 +99,10 @@ public class BaseFragment extends Fragment implements OnChartGestureListener, Se
             }
             if(entries.size() <=0)
                 continue;
+            else{
+                if(maxItems <entries.size())
+                    maxItems = entries.size();
+            }
             LineDataSet dataset = setLineDataSetStyle(entries, i);
             if (com.github.mikephil.charting.utils.Utils.getSDKInt() >= 18) {// fill drawable only supported on api level 18 and above
                 Drawable drawable = ContextCompat.getDrawable(getContext(), Constant.FADE_COLORS[i]);
@@ -263,7 +267,6 @@ public class BaseFragment extends Fragment implements OnChartGestureListener, Se
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -334,7 +337,6 @@ public class BaseFragment extends Fragment implements OnChartGestureListener, Se
         }
         //tvX.setText("" + (mSeekBarDates.getProgress() + 1)); //Utils.getDateString(mSeekBarDates.getProgress()));
         tvItems.setText("" + (mSeekBarItems.getProgress()));
-
         setData(mSeekBarDates.getProgress(), mSeekBarItems.getProgress(),  getSkipIndex());
 
         // redraw

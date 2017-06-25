@@ -22,7 +22,8 @@ public class QuarterAxisValueFormatter implements IAxisValueFormatter
     public String getFormattedValue(float value, AxisBase axis) {
 
         int quarter = (int) value;
-
+        if( quarter < 0)
+            return "";
         String quarterName = mQuarter[quarter % mQuarter.length];
 
         return quarterName;
