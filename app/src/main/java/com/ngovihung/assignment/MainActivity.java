@@ -24,6 +24,8 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ngovihung.assignment.fragment.BaseFragment;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
     private LinearLayout menu_item_daily,menu_item_monthly,menu_item_quarter;
     ArrayList<Portfolio> portfolios;
     FragmentTransaction fragmentTransaction;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,12 +91,11 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
-//
-////        mDatabase = FirebaseDatabase.getInstance().getReference();
-//        //setDataToFireBase();
+        Application.setActiveActivity(this);
+
+        //mDatabase = FirebaseDatabase.getInstance().getReference();
+        //setDataToFireBase();
 ////        readDataFireBase();
-//        Application.setActiveActivity(this);
-//        setDailyChart();
 
     }
 
@@ -157,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
                 fragmentTransaction.commit();
                 getSupportActionBar().setTitle("Quarter");
                 break;
-
         }
 
         if (drawer != null & drawer.isDrawerOpen(GravityCompat.START))
@@ -191,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
         return true;
     }
 
-//    private DatabaseReference mDatabase;
+
 //    private void  setDataToFireBase(){
 //
 //        Portfolio p = portfolios.get(0);

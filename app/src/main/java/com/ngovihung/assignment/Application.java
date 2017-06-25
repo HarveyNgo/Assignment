@@ -10,7 +10,7 @@ import com.google.firebase.FirebaseApp;
  * Created by ngo.vi.hung on 6/21/2017.
  */
 
-public class Application extends android.app.Application {
+public class Application extends MultiDexApplication {
 
     private static Context mContext;
     private static AppCompatActivity mActiveActivity;
