@@ -51,7 +51,7 @@ public class BaseFragment extends Fragment implements OnChartGestureListener, Se
         dataset.setColor(Constant.COLORS[position]);
         dataset.enableDashedLine(10f, 5f, 0f);
         dataset.enableDashedHighlightLine(10f, 5f, 0f);
-        dataset.setCircleColor(Color.BLACK);
+        dataset.setCircleColor(Constant.COLORS[position]);
         dataset.setLineWidth(1f);
         dataset.setCircleRadius(3f);
         dataset.setDrawCircleHole(false);
@@ -115,21 +115,15 @@ public class BaseFragment extends Fragment implements OnChartGestureListener, Se
         // create a data object with the datasets
         LineData data = new LineData(dataSets);
         lineChart.setData(data);
+        applyStyleForChart();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionToggleValues: {
-                List<ILineDataSet> sets = lineChart.getData()
-                        .getDataSets();
-
-                for (ILineDataSet iSet : sets) {
-
-                    LineDataSet set = (LineDataSet) iSet;
-                    set.setDrawValues(!set.isDrawValuesEnabled());
-                }
-
+                isDrawValues = !isDrawValues;
+                applyStyleForChart();
                 lineChart.invalidate();
                 break;
             }
@@ -154,75 +148,35 @@ public class BaseFragment extends Fragment implements OnChartGestureListener, Se
                 break;
             }
             case R.id.actionToggleFilled: {
-
-                List<ILineDataSet> sets = lineChart.getData()
-                        .getDataSets();
-
-                for (ILineDataSet iSet : sets) {
-
-                    LineDataSet set = (LineDataSet) iSet;
-                    if (set.isDrawFilledEnabled())
-                        set.setDrawFilled(false);
-                    else
-                        set.setDrawFilled(true);
-                }
+                isDrawFill = !isDrawFill;
+                applyStyleForChart();
                 lineChart.invalidate();
                 break;
             }
             case R.id.actionToggleCircles: {
-                List<ILineDataSet> sets = lineChart.getData()
-                        .getDataSets();
-
-                for (ILineDataSet iSet : sets) {
-
-                    LineDataSet set = (LineDataSet) iSet;
-                    if (set.isDrawCirclesEnabled())
-                        set.setDrawCircles(false);
-                    else
-                        set.setDrawCircles(true);
-                }
+                isDrawCircle = !isDrawCircle;
+                applyStyleForChart();
                 lineChart.invalidate();
                 break;
             }
             case R.id.actionToggleCubic: {
-                List<ILineDataSet> sets = lineChart.getData()
-                        .getDataSets();
-
-                for (ILineDataSet iSet : sets) {
-
-                    LineDataSet set = (LineDataSet) iSet;
-                    set.setMode(set.getMode() == LineDataSet.Mode.CUBIC_BEZIER
-                            ? LineDataSet.Mode.LINEAR
-                            : LineDataSet.Mode.CUBIC_BEZIER);
-                }
+                isDrawCubicBezier = !isDrawCubicBezier;
+                lineDataSetMode = isDrawCubicBezier ?  LineDataSet.Mode.CUBIC_BEZIER : LineDataSet.Mode.LINEAR;
+                applyStyleForChart();
                 lineChart.invalidate();
                 break;
             }
             case R.id.actionToggleStepped: {
-                List<ILineDataSet> sets = lineChart.getData()
-                        .getDataSets();
-
-                for (ILineDataSet iSet : sets) {
-
-                    LineDataSet set = (LineDataSet) iSet;
-                    set.setMode(set.getMode() == LineDataSet.Mode.STEPPED
-                            ? LineDataSet.Mode.LINEAR
-                            : LineDataSet.Mode.STEPPED);
-                }
+                isDrawStepped = !isDrawStepped;
+                lineDataSetMode = isDrawStepped ?  LineDataSet.Mode.STEPPED : LineDataSet.Mode.LINEAR;
+                applyStyleForChart();
                 lineChart.invalidate();
                 break;
             }
             case R.id.actionToggleHorizontalCubic: {
-                List<ILineDataSet> sets = lineChart.getData()
-                        .getDataSets();
-
-                for (ILineDataSet iSet : sets) {
-
-                    LineDataSet set = (LineDataSet) iSet;
-                    set.setMode(set.getMode() == LineDataSet.Mode.HORIZONTAL_BEZIER
-                            ? LineDataSet.Mode.LINEAR
-                            : LineDataSet.Mode.HORIZONTAL_BEZIER);
-                }
+                isDrawHorizontalBezier=!isDrawHorizontalBezier;
+                lineDataSetMode = isDrawHorizontalBezier ?  LineDataSet.Mode.HORIZONTAL_BEZIER : LineDataSet.Mode.LINEAR;
+                applyStyleForChart();
                 lineChart.invalidate();
                 break;
             }
@@ -267,6 +221,26 @@ public class BaseFragment extends Fragment implements OnChartGestureListener, Se
         return super.onOptionsItemSelected(item);
     }
 
+    private boolean isDrawValues = true;
+    private boolean isDrawFill = true;
+    private boolean isDrawCircle = true;
+    private boolean isDrawCubicBezier = false;
+    private boolean isDrawStepped = false;
+    private boolean isDrawHorizontalBezier = false;
+    private LineDataSet.Mode lineDataSetMode = LineDataSet.Mode.LINEAR;
+
+    private void applyStyleForChart(){
+        List<ILineDataSet> sets = lineChart.getData()
+                .getDataSets();
+
+        for (ILineDataSet iSet : sets) {
+            LineDataSet set = (LineDataSet) iSet;
+            set.setDrawValues(isDrawValues);
+            set.setDrawFilled(isDrawFill);
+            set.setDrawCircles(isDrawCircle);
+            set.setMode(lineDataSetMode);
+        }
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
