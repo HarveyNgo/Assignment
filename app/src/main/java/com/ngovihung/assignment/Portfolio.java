@@ -51,14 +51,17 @@ public class Portfolio implements Serializable {
     }
 
     public void setMonthlyNavs(NavsItem fromNavs, NavsItem toNavs){
-        if(toNavs.getDate().after(fromNavs.getDate()) && Utils.compareSameMonth(fromNavs.getDate(),toNavs.getDate())){
+        if(toNavs.getDate().after(fromNavs.getDate())
+                && Utils.compareSameMonth(fromNavs.getDate(),toNavs.getDate())
+                    && toNavs.getAmount() >0){
             this.MonthlyNavs.set(Utils.getMonthOfYear(toNavs.getDate()), toNavs);
         }
     }
 
     public void setQuarterNavs(NavsItem fromNavs, NavsItem toNavs){
         if(toNavs.getDate().after(fromNavs.getDate())
-                && Utils.compareSameQuarter(fromNavs.getDate(),toNavs.getDate())){
+                && Utils.compareSameQuarter(fromNavs.getDate(),toNavs.getDate())
+                && toNavs.getAmount() >0){
             this.quarterlyNavs.set(Utils.getQuarterIndex(toNavs.getDate()), toNavs);
         }
     }

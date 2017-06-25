@@ -14,4 +14,10 @@ public class Constant {
     public static final String[] MONTHS = Application.getContext().getResources().getStringArray(R.array.months);
     public static final int[] FADE_COLORS = {R.drawable.fade_red,R.drawable.fade_purple,R.drawable.fade_green};
 
+
+    public static final int DAILY = 1;
+    public static final int MONTHLY = 2;
+    public static final int QUARTER = 3;
+
+
 }

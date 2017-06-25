@@ -34,7 +34,7 @@ public class DayAxisValueFormatter implements IAxisValueFormatter
             return monthName + " " + yearName;
         } else {
 
-            int dayOfMonth = determineDayOfMonth(days, month + 12 * (year - 2016));
+            int dayOfMonth = determineDayOfMonth(days, month + 12 * (year-2017));
 
             String appendix = "th";
 
@@ -123,7 +123,7 @@ public class DayAxisValueFormatter implements IAxisValueFormatter
     private int determineYear(int days) {
 
         if (days <= 366)
-            return 2016;
+            return 2017;
         else if (days <= 730)
             return 2017;
         else if (days <= 1094)

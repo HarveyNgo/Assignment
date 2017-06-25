@@ -3,6 +3,7 @@ package com.ngovihung.assignment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -50,12 +51,14 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Application.setActiveActivity(this);
+        Application.setActiveActivity(this);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        toolbar.setNavigationOnClickListener(this);
+        toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),
+                R.color.colorPrimary)); //getResources().getColor(R.color.colorPrimary));
+//        toolbar.setNavigationOnClickListener(this);
+        toolbar.setOnClickListener(this);
         setSupportActionBar(toolbar);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, 0, 0);
@@ -109,10 +112,14 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
                         for (int j = 0; j < navsJsonList.length(); ++j) {
                             NavsItem  item  = gson.fromJson(navsJsonList.getJSONObject(j).toString(), NavsItem.class);
                             p.getDailyNavs().set(Utils.getDayInYear(item.getDate())-1,item);
-//                            if(j > 0 ){
-//                                p.setMonthlyNavs(p.getDailyNavs().get(j-1),p.getDailyNavs().get(j));
-//                                p.setQuarterNavs(p.getDailyNavs().get(j-1),p.getDailyNavs().get(j));
-//                            }
+                        }
+                    }
+                    for(int k=1; k<p.getDailyNavs().size(); k++) {
+                        NavsItem fromNavItem = p.getDailyNavs().get(k - 1);
+                        NavsItem toNavItem = p.getDailyNavs().get(k);
+                        if (fromNavItem.getDate() != null && toNavItem.getDate() != null) {
+                            p.setMonthlyNavs(fromNavItem, toNavItem);
+                            p.setQuarterNavs(fromNavItem, toNavItem);
                         }
                     }
                     portfolios.add(p);
@@ -122,75 +129,6 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
             e.printStackTrace();
         }
     }
-
-
-//    private void setMonthlyChart(){
-////        if(lineChart.getData() != null)
-////            lineChart.getData().clearValues();
-////        ArrayList<LineDataSet> dataSets = new ArrayList<>();
-////        for(int i=0;i< portfolios.size(); i++){
-////            ArrayList<Entry> entries = new ArrayList<>();
-////            for(int j=0;j< 12; j++){
-////                entries.add(new Entry(portfolios.get(i).getMonthlyNavs().get(j)
-////                        .getAmount(),j));
-////            }
-////            LineDataSet dataset = new LineDataSet(entries,portfolios.get(i).getId());
-////            dataset.setColor(Constant.COLORS[i]);
-////            dataSets.add(dataset);
-////
-////        }
-////        ArrayList<String> xAxisLabels = new ArrayList<>();
-////        for(String month : Constant.MONTHS){
-////            xAxisLabels.add(month);
-////        }
-////        LineData data = new LineData(xAxisLabels,dataSets);
-////        lineChart.setData(data);
-////        lineChart.notifyDataSetChanged();
-////        lineChart.invalidate();
-//    }
-//    private void setQuarterChart(){
-////        if(lineChart.getData() != null)
-////            lineChart.getData().clearValues();
-////        ArrayList<LineDataSet> dataSets = new ArrayList<>();
-////        for(int i=0;i< portfolios.size(); i++){
-////            ArrayList<Entry> entries = new ArrayList<>();
-////            for(int j=0;j< 4; j++){
-////                entries.add(new Entry(portfolios.get(i).getQuarterlyNavs().get(j)
-////                        .getAmount(),j));
-////            }
-////            LineDataSet dataset = new LineDataSet(entries,portfolios.get(i).getId());
-////            dataset.setColor(Constant.COLORS[i]);
-////            dataSets.add(dataset);
-////
-////        }
-////        ArrayList<String> xAxisLabels = new ArrayList<>();
-////        for(int i=1; i<5;i++){
-////            String quarter = Constant.MONTHS[((Constant.MONTHS.length /4)*i) -1];
-////            xAxisLabels.add(quarter);
-////        }
-////        LineData data = new LineData(xAxisLabels,dataSets);
-////        lineChart.setData(data);
-////        lineChart.notifyDataSetChanged();
-////        lineChart.invalidate();
-//    }
-
-//
-//    private LineDataSet setLineDataSetStyle(ArrayList<Entry> entries,String title, int position){
-//        LineDataSet dataset = new LineDataSet(entries,"");
-//        dataset.setColor(Constant.COLORS[position]);
-//        dataset.enableDashedLine(10f, 5f, 0f);
-//        dataset.enableDashedHighlightLine(10f, 5f, 0f);
-//        dataset.setCircleColor(Color.BLACK);
-//        dataset.setLineWidth(1f);
-//        dataset.setCircleRadius(3f);
-//        dataset.setDrawCircleHole(false);
-//        dataset.setValueTextSize(9f);
-//        dataset.setDrawFilled(true);
-//        dataset.setFormLineWidth(1f);
-//        dataset.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
-//        dataset.setFormSize(15.f);
-//        return dataset;
-//    }
 
 
     @Override
@@ -203,30 +141,27 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
                 break;
             case R.id.menu_item_daily:
                 fragmentTransaction  = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_container, new DailyFragment(), "dailyFragment");
+                fragmentTransaction.replace(R.id.main_container,DailyFragment.getInstance(portfolios), "dailyFragment");
                 fragmentTransaction.commit();
                 getSupportActionBar().setTitle("Daily");
                 break;
             case R.id.menu_item_monthly:
                 fragmentTransaction  = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_container, new MonthlyFragment());
+                fragmentTransaction.replace(R.id.main_container,MonthlyFragment.getInstance(portfolios));
                 fragmentTransaction.commit();
                 getSupportActionBar().setTitle("Monthly");
                 break;
             case R.id.menu_item_quarter:
                 fragmentTransaction  = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_container,new QuarterFragment());
+                fragmentTransaction.replace(R.id.main_container,QuarterFragment.getInstance(portfolios));
                 fragmentTransaction.commit();
                 getSupportActionBar().setTitle("Quarter");
                 break;
 
         }
 
-
-
-//
-//        }
-
+        if (drawer != null & drawer.isDrawerOpen(GravityCompat.START))
+            drawer.closeDrawer(GravityCompat.START);
     }
 
 
@@ -234,13 +169,6 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.line, menu);
         return true;
-    }
-    public Fragment getActiveFragment() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            return null;
-        }
-        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-        return getSupportFragmentManager().findFragmentByTag(tag);
     }
     public Fragment getVisibleFragment(){
         FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
@@ -258,11 +186,8 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
 
         Fragment myFragment =getVisibleFragment(); // (Fragment)getSupportFragmentManager().findFragmentByTag(R.id.main_container);
         if (myFragment != null && myFragment.isVisible()) {
-            if(myFragment instanceof DailyFragment){
-                ((DailyFragment) myFragment).onOptionsItemSelected(item);
-            }
+            myFragment.onOptionsItemSelected(item);
         }
-
         return true;
     }
 

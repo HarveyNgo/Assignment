@@ -26,9 +26,9 @@
     </style>
 
     <array name="floor_colors">
-        <item>#FF4500</item>
-        <item>#BA55D3</item>
-        <item>#9ACD32</item>
+        <item>@color/chart1Color</item>
+        <item>@color/chart2Color</item>
+        <item>@color/chart3Color</item>
         <item>#8A2BE2</item>
         <item>#FCE8EB</item>
         <item>#E7DEEA</item>

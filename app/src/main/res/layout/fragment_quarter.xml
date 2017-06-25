@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/com.ngovihung.assignment"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"    >
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/activity_main_chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/chart_name" />
+
+    <RelativeLayout
+        android:id="@+id/daily_ll_seekbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true">
+        <SeekBar
+            android:id="@+id/seekBar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:paddingBottom="12dp"
+            android:max="4"
+            android:layout_toRightOf="@+id/daily_tv_seek2_start"
+            android:layout_toLeftOf="@+id/daily_tv_seek2_end"/>
+        <TextView
+            android:id="@+id/daily_tv_seek2_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="Items:"
+            android:gravity="left" />
+        <TextView
+            android:id="@+id/daily_tv_seek2_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="12"
+            android:gravity="right" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/daily_ll_seekbar1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/daily_ll_seekbar2"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
+        <SeekBar
+            android:id="@+id/seekBar1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:paddingBottom="12dp"
+            android:layout_toRightOf="@+id/daily_tv_seek_start"
+            android:layout_toLeftOf="@+id/daily_tv_seek_end"/>
+        <TextView
+            android:id="@+id/daily_tv_seek_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="Mar"
+            android:gravity="left" />
+        <TextView
+            android:id="@+id/daily_tv_seek_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Dec"
+            android:gravity="right" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/chart_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_above="@+id/daily_ll_seekbar1">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <CheckBox
+                android:id="@+id/checkbox_chart_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:buttonTint="@color/chart1Color" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chart1" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <CheckBox
+                android:id="@+id/checkbox_chart_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:buttonTint="@color/chart2Color"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chart2"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <CheckBox
+                android:id="@+id/checkbox_chart_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:buttonTint="@color/chart3Color"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chart3"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

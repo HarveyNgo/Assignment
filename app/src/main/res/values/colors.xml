@@ -152,4 +152,8 @@
     <color name="Transparent">#00000000</color>
     <color name="EnableGreen">#FF008013</color>
     <color name="DisableGreen">#66008013</color>
+
+    <color name="chart1Color">#FF4500</color>
+    <color name="chart2Color">#BA55D3</color>
+    <color name="chart3Color">#9ACD32</color>
 </resources>
