@@ -7,7 +7,8 @@
     </item>
     <item
         android:id="@+id/actionToggleIcons"
-        android:title="Toggle Icons">
+        android:title="Toggle Icons"
+        android:visible="false">
     </item>
     <item
         android:id="@+id/actionToggleFilled"
@@ -31,7 +32,8 @@
     </item>
     <item
         android:id="@+id/actionToggleHighlight"
-        android:title="Toggle Highlight">
+        android:title="Toggle Highlight"
+        android:visible="false">
     </item>
     <item
         android:id="@+id/animateX"
@@ -47,18 +49,22 @@
     </item>
     <item
         android:id="@+id/actionToggleAdjustXLegend"
-        android:title="Toggle AdjustXLegend">
+        android:title="Toggle AdjustXLegend"
+        android:visible="false">
     </item>
     <item
         android:id="@+id/actionSave"
-        android:title="Save to SD-Card">
+        android:title="Save to SD-Card"
+        android:visible="false">
     </item>
     <item
         android:id="@+id/actionTogglePinch"
-        android:title="Toggle PinchZoom">
+        android:title="Toggle PinchZoom"
+        android:visible="false">
     </item>
     <item
         android:id="@+id/actionToggleAutoScaleMinMax"
-        android:title="Toggle auto scale min/max">
+        android:title="Toggle auto scale min/max"
+        android:visible="false">
     </item>
 </menu>

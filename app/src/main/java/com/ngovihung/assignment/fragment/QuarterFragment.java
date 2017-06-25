@@ -111,7 +111,7 @@ public class QuarterFragment extends BaseFragment{
 
         maxProgress = 4;
         type = Constant.QUARTER;
-        setData(0,3,getSkipIndex());
+        setData(0,4,getSkipIndex());
         return v;
     }
 }

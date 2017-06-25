@@ -111,7 +111,7 @@ public class MonthlyFragment extends BaseFragment {
 
         maxProgress = 12;
         type = Constant.MONTHLY;
-        setData(0,11,getSkipIndex());
+        setData(0,12,getSkipIndex());
         return v;
     }
 }

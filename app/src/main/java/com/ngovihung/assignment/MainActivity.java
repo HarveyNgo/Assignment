@@ -56,15 +56,15 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),
-                R.color.colorPrimary)); //getResources().getColor(R.color.colorPrimary));
-//        toolbar.setNavigationOnClickListener(this);
+                R.color.colorPrimary));
+        toolbar.setNavigationOnClickListener(this);
         toolbar.setOnClickListener(this);
         setSupportActionBar(toolbar);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, 0, 0);
         drawer.addDrawerListener(toggle);
         toggle.setHomeAsUpIndicator(getResources().getDrawable(R.drawable.ic_menu));
-        toggle.setDrawerIndicatorEnabled(false);
+        toggle.setDrawerIndicatorEnabled(true);
         toggle.setToolbarNavigationClickListener(this);
         toggle.syncState();
 

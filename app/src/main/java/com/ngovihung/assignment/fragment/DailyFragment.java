@@ -115,7 +115,7 @@ public class DailyFragment  extends BaseFragment{
 
         maxProgress = 365;
         type = Constant.DAILY;
-        setData(0,364,getSkipIndex());
+        setData(0,365,getSkipIndex());
         return v;
     }
 }
