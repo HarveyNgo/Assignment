@@ -10,28 +10,21 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.ChartTouchListener;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ngovihung.assignment.fragment.BaseFragment;
+import com.ngovihung.assignment.data.NavsItem;
+import com.ngovihung.assignment.data.Portfolio;
 import com.ngovihung.assignment.fragment.DailyFragment;
 import com.ngovihung.assignment.fragment.MonthlyFragment;
 import com.ngovihung.assignment.fragment.QuarterFragment;
+import com.ngovihung.assignment.tools.Constant;
+import com.ngovihung.assignment.tools.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -112,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements   View.OnClickLis
                     JSONArray navsJsonList = portfolioJson.getJSONArray(Constant.NAVS_TAG);
                     if (navsJsonList != null && navsJsonList.length() > 0) {
                         for (int j = 0; j < navsJsonList.length(); ++j) {
-                            NavsItem  item  = gson.fromJson(navsJsonList.getJSONObject(j).toString(), NavsItem.class);
+                            NavsItem item  = gson.fromJson(navsJsonList.getJSONObject(j).toString(), NavsItem.class);
                             p.getDailyNavs().set(Utils.getDayInYear(item.getDate())-1,item);
                         }
                     }

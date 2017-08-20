@@ -1,7 +1,6 @@
 package com.ngovihung.assignment.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +14,10 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.ngovihung.assignment.Application;
-import com.ngovihung.assignment.Constant;
-import com.ngovihung.assignment.MonthAxisValueFormatter;
+import com.ngovihung.assignment.tools.Constant;
 import com.ngovihung.assignment.MyMarkerView;
-import com.ngovihung.assignment.Portfolio;
-import com.ngovihung.assignment.QuarterAxisValueFormatter;
+import com.ngovihung.assignment.data.Portfolio;
+import com.ngovihung.assignment.tools.QuarterAxisValueFormatter;
 import com.ngovihung.assignment.R;
 
 import java.util.ArrayList;
@@ -109,9 +107,18 @@ public class QuarterFragment extends BaseFragment{
         checkbox_chart_3 = (CheckBox) v.findViewById(R.id.checkbox_chart_3);
         checkbox_chart_3.setOnClickListener(this);
 
-        maxProgress = 4;
-        type = Constant.QUARTER;
         setData(0,4,getSkipIndex());
         return v;
+    }
+
+
+    @Override
+    protected int getType() {
+        return  Constant.QUARTER;
+    }
+
+    @Override
+    protected int getMaxProgress() {
+        return 4;
     }
 }

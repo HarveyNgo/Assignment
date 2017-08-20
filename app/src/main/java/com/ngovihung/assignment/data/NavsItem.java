@@ -1,4 +1,4 @@
-package com.ngovihung.assignment;
+package com.ngovihung.assignment.data;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -21,11 +21,11 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
-import com.ngovihung.assignment.Constant;
-import com.ngovihung.assignment.NavsItem;
-import com.ngovihung.assignment.Portfolio;
+import com.ngovihung.assignment.tools.Constant;
+import com.ngovihung.assignment.data.NavsItem;
+import com.ngovihung.assignment.data.Portfolio;
 import com.ngovihung.assignment.R;
-import com.ngovihung.assignment.Utils;
+import com.ngovihung.assignment.tools.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,17 +34,23 @@ import java.util.List;
  * Created by ngo.vi.hung on 6/24/2017.
  */
 
-public class BaseFragment extends Fragment implements OnChartGestureListener, SeekBar.OnSeekBarChangeListener, View.OnClickListener{
+public abstract class BaseFragment extends Fragment implements OnChartGestureListener, SeekBar.OnSeekBarChangeListener, View.OnClickListener{
 
-    LineChart lineChart;
-    ArrayList<Portfolio> portfolios;
+    protected LineChart lineChart;
+    protected ArrayList<Portfolio> portfolios;
     CheckBox checkbox_chart_1, checkbox_chart_2, checkbox_chart_3;
     SeekBar mSeekBarDates, mSeekBarItems;
     TextView tvX, tvItems;
-    int maxProgress=365;
+    //int maxProgress=365;
 
-    int type=-1;
-
+    //private int type=-1;
+    private boolean isDrawValues = true;
+    private boolean isDrawFill = true;
+    private boolean isDrawCircle = true;
+    private boolean isDrawCubicBezier = false;
+    private boolean isDrawStepped = false;
+    private boolean isDrawHorizontalBezier = false;
+    private LineDataSet.Mode lineDataSetMode = LineDataSet.Mode.LINEAR;
 
     protected LineDataSet setLineDataSetStyle(ArrayList<Entry> entries, int position) {
         LineDataSet dataset = new LineDataSet(entries, "");
@@ -73,23 +79,23 @@ public class BaseFragment extends Fragment implements OnChartGestureListener, Se
                 continue;
             ArrayList<Entry> entries = new ArrayList<>();
             List<NavsItem> navsItems = new ArrayList<>();
-            if(type == Constant.DAILY){
+            if(getType() == Constant.DAILY){
                 navsItems = portfolios.get(i).getDailyNavs().subList(fromIndex, fromIndex + range);
-            }else if(type == Constant.MONTHLY){
+            }else if(getType() == Constant.MONTHLY){
                 navsItems = portfolios.get(i).getMonthlyNavs().subList(fromIndex, fromIndex + range);
-            }else if(type == Constant.QUARTER){
+            }else if(getType() == Constant.QUARTER){
                 navsItems =  portfolios.get(i).getQuarterlyNavs().subList(fromIndex, fromIndex + range);
             }
             for (int j = 0; j < navsItems.size(); j++) {
                 if (navsItems.get(j).getDate() != null &&
                         navsItems.get(j).getAmount() > 0) {
-                    if(type ==Constant.DAILY) {
+                    if(getType() ==Constant.DAILY) {
                         entries.add(new Entry(Utils.getDayInYear(navsItems.get(j).getDate()),
                                 navsItems.get(j).getAmount()));
-                    }else if(type ==  Constant.MONTHLY){
+                    }else if(getType() ==  Constant.MONTHLY){
                         entries.add(new Entry(Utils.getMonthOfYear(navsItems.get(j).getDate()),
                                 navsItems.get(j).getAmount()));
-                    }else if (type ==  Constant.QUARTER){
+                    }else if (getType() ==  Constant.QUARTER){
                         entries.add(new Entry(Utils.getQuarterIndex(navsItems.get(j).getDate()),
                                 navsItems.get(j).getAmount()));
                     }
@@ -221,13 +227,7 @@ public class BaseFragment extends Fragment implements OnChartGestureListener, Se
         return super.onOptionsItemSelected(item);
     }
 
-    private boolean isDrawValues = true;
-    private boolean isDrawFill = true;
-    private boolean isDrawCircle = true;
-    private boolean isDrawCubicBezier = false;
-    private boolean isDrawStepped = false;
-    private boolean isDrawHorizontalBezier = false;
-    private LineDataSet.Mode lineDataSetMode = LineDataSet.Mode.LINEAR;
+
 
     private void applyStyleForChart(){
         List<ILineDataSet> sets = lineChart.getData()
@@ -241,6 +241,10 @@ public class BaseFragment extends Fragment implements OnChartGestureListener, Se
             set.setMode(lineDataSetMode);
         }
     }
+
+    protected abstract int getType();
+    protected abstract int getMaxProgress();
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -301,7 +305,7 @@ public class BaseFragment extends Fragment implements OnChartGestureListener, Se
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         switch (seekBar.getId()) {
             case R.id.seekBar1:
-                mSeekBarItems.setMax(maxProgress - mSeekBarDates.getProgress());
+                mSeekBarItems.setMax(getMaxProgress() - mSeekBarDates.getProgress());
                 mSeekBarItems.setProgress(mSeekBarItems.getMax());
                 break;
             case R.id.seekBar2:

@@ -1,4 +1,6 @@
-package com.ngovihung.assignment;
+package com.ngovihung.assignment.data;
+
+import com.ngovihung.assignment.tools.Utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;

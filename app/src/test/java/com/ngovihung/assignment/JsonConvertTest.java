@@ -2,6 +2,10 @@ package com.ngovihung.assignment;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.ngovihung.assignment.data.NavsItem;
+import com.ngovihung.assignment.data.Portfolio;
+import com.ngovihung.assignment.tools.Constant;
+import com.ngovihung.assignment.tools.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;

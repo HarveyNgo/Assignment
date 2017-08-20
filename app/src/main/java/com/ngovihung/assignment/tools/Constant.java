@@ -1,4 +1,7 @@
-package com.ngovihung.assignment;
+package com.ngovihung.assignment.tools;
+
+import com.ngovihung.assignment.Application;
+import com.ngovihung.assignment.R;
 
 /**
  * Created by ngo.vi.hung on 6/21/2017.

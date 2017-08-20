@@ -1,4 +1,6 @@
-package com.ngovihung.assignment;
+package com.ngovihung.assignment.tools;
+
+import com.ngovihung.assignment.Application;
 
 import java.io.BufferedReader;
 import java.io.IOException;
